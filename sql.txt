@@ -1,0 +1,67 @@
+select department_name from hr.departments;
+
+create table animals(
+    animal_id int NOT NULL PRIMARY KEY,
+    meno varchar2(20) NOT NULL UNIQUE,
+    age number(29),
+    state varchar2(100),
+    size_animal varchar2(20) NOT NULL
+);
+
+select count(employee_id) as pocet, substr(job_id, 1,2) as job_id, avg(salary) from hr.employees 
+group by job_id having avg(salary) > 1000;
+
+select department_id from hr.employees emp where extract(year from emp.hire_date) >= 2005
+ group by emp.department_id having count(emp.employee_id) > 5
+
+select * from hr.departments;
+
+select count(employee_id) as pocet, min(salary) from hr.employees 
+join hr.departments on hr.employees.department_id = hr.departments.department_id
+join hr.locations on hr.departments.location_id = hr.locations.location_id 
+group by postal_code order by min(salary) ASC;
+
+select * from hr.locations;
+
+select first_name, last_name, employee_id from hr.employees 
+where department_id = (select department_id from hr.departments where department_name = 'Marketing') order by employee_id ASC;
+
+select avg(salary) from hr.employees 
+join hr.departments using(department_id)
+join hr.locations using(location_id) 
+group by city;
+
+select count(employee_id), max(salary), extract(year from hire_date) "Year" from hr.employees 
+group by extract(year from hire_date) having count(employee_id) > 10;
+
+select street_address, city
+from hr.locations
+where city = 'Hiroshima';
+
+SELECT first_name, last_name, street_address
+FROM HR.employees
+JOIN HR.departments using(department_id)
+JOIN HR.locations using(location_id)
+WHERE (department_name = 'IT') OR (department_name = 'Sales')
+ORDER BY department_name;
+
+SELECT job_title, avg(salary)
+FROM HR.employees
+JOIN HR.jobs using(job_id)
+GROUP BY job_title
+ORDER BY avg(salary) DESC;
+
+SELECT first_name, last_name, salary
+FROM HR.employees
+WHERE salary > 5000;
+
+SELECT first_name, last_name, department_name, hire_date FROM HR.employees
+JOIN HR.departments using(department_id)
+WHERE department_name = 'Sales'
+ORDER BY hire_date DESC;
+
+SELECT city, avg(salary) as mean FROM hr.employees
+JOIN HR.departments using(department_id)
+JOIN HR.locations using(location_id)
+GROUP BY city
+ORDER BY avg(salary) DESC;
